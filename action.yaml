@@ -1,0 +1,54 @@
+name: KMP Static Analysis Check
+description: 'Run static analysis checks on the Kotlin Multiplatform project'
+author: 'Mifos Initiative'
+branding:
+  icon: 'check-circle'
+  color: 'gray-dark'
+
+runs:
+  using: composite
+  steps:
+    - name: Set up Java development environment
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'zulu'  # Use Zulu distribution of OpenJDK
+        java-version: '17'     # Use Java 17 version
+
+    - name: Setup Gradle
+      uses: gradle/actions/setup-gradle@v4
+
+    # Cache Gradle dependencies and build outputs to speed up future builds
+    - name: Cache Gradle and build outputs
+      uses: actions/cache@v4
+      with:
+        path: |
+          ~/.gradle/caches
+          ~/.gradle/wrapper
+          build
+        key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+        restore-keys: ${{ runner.os }}-gradle-
+
+    - name: Check Build Logic Configuration
+      shell: bash
+      run: ./gradlew check -p build-logic
+
+    - name: Run Spotless
+      shell: bash
+      run: ./gradlew spotlessCheck --no-configuration-cache --no-daemon
+
+    - name: Run Detekt
+      id: detekt_check
+      shell: bash
+      run: ./gradlew detekt
+
+    - name: Run Dependency Check
+      shell: bash
+      run: ./gradlew dependencyGuard
+
+    - name: Upload Detekt Reports
+      if: ${{ steps.detekt_check.outcome == 'success' }}
+      uses: actions/upload-artifact@v4
+      with:
+        name: detekt-reports
+        path: |
+          **/build/reports/detekt/detekt.md
