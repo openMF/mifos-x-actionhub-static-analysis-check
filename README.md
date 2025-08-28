@@ -6,16 +6,22 @@ This GitHub Action performs comprehensive static analysis checks on a Kotlin Mul
 project. It ensures code quality, formatting, and dependency management through multiple
 verification steps.
 
+## Inputs
+
+| Name           | Required | Default | Description                             |
+|----------------|----------|---------|-----------------------------------------|
+| `java-version` | No       | `17`    | Java version to use (e.g., `17`, `21`). |
+
 ```yaml
 - name: Static Analysis Check
-  uses: openMF/kmp-static-analysis-check-action@v1.0.0
+  uses: openMF/kmp-static-analysis-check-action@v1.0.1
 ```
 
 ## Prerequisites
 
 - Kotlin Multiplatform project
 - Gradle build system
-- Java 17
+- Java (configurable; defaults to 17)
 
 ## Requirements
 
@@ -84,7 +90,9 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Static Analysis Check
-        uses: openMF/kmp-static-analysis-check-action@v1.0.0
+        uses: openMF/kmp-static-analysis-check-action@v1.0.1
+        with:
+          java-version: '21'
 ```
 
 ## Benefits

@@ -5,6 +5,12 @@ branding:
   icon: 'check-circle'
   color: 'gray-dark'
 
+inputs:
+  java-version:
+    description: 'Java version to use (e.g., 17, 21).'
+    required: false
+    default: '17'
+
 runs:
   using: composite
   steps:
@@ -12,7 +18,7 @@ runs:
       uses: actions/setup-java@v4
       with:
         distribution: 'zulu'  # Use Zulu distribution of OpenJDK
-        java-version: '17'     # Use Java 17 version
+        java-version: ${{ inputs.java-version }}     # Use Java 17 version
 
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@v4
