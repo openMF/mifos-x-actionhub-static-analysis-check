@@ -18,7 +18,7 @@ runs:
       uses: actions/setup-java@v4
       with:
         distribution: 'zulu'  # Use Zulu distribution of OpenJDK
-        java-version: ${{ inputs.java-version }}     # Use Java 17 version
+        java-version: ${{ inputs.java-version }}
 
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@v4
