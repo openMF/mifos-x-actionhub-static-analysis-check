@@ -85,7 +85,7 @@ on: [ push, pull_request ]
 
 jobs:
   static-analysis:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     steps:
       - uses: actions/checkout@v4
 
